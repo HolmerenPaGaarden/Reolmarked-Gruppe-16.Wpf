@@ -1,0 +1,237 @@
+﻿<Window x:Class="Reolmarked.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Reolmarked" Height="820" Width="1180" WindowStartupLocation="CenterScreen">
+    <Grid Margin="16">
+        <TabControl>
+
+            <!-- Opret vare + label -->
+            <TabItem Header="Opret vare">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="16" VerticalAlignment="Top" Width="480">
+                        <TextBlock Text="ReolID" FontWeight="SemiBold"/>
+                        <TextBox x:Name="TbReolId" Margin="0,4,0,12" />
+
+                        <TextBlock Text="Pris (kr)" FontWeight="SemiBold"/>
+                        <TextBox x:Name="TbPris" Margin="0,4,0,12" />
+
+                        <Button Content="Opret produkt + generér label"
+                                Click="CreateProduct_Click" Height="38"/>
+                        <TextBlock x:Name="LblCreateResult" Margin="0,10,0,0" TextWrapping="Wrap" />
+
+                        <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                            <Button Content="Åbn labels-mappe" Click="OpenLabels_Click" Width="160" Margin="0,0,8,0"/>
+                            <Button Content="Opdater produktliste" Click="RefreshProducts_Click" Width="170"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Scan/registrér salg -->
+            <TabItem Header="Salg (scan)">
+                <StackPanel Margin="16" VerticalAlignment="Top" Width="520">
+                    <TextBlock Text="Scan/skriv stregkode" FontWeight="SemiBold"/>
+                    <TextBox x:Name="TbBarcode" Margin="0,4,0,12" />
+
+                    <Button Content="Registrér salg" Click="RegisterSale_Click" Height="38"/>
+                    <TextBlock x:Name="LblSaleResult" Margin="0,10,0,0" TextWrapping="Wrap" />
+                </StackPanel>
+            </TabItem>
+
+            <!-- Oversigt produkter -->
+            <TabItem Header="Produkter">
+                <DockPanel Margin="8">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0,0,0,8">
+                        <Button Content="Opdater" Click="RefreshProducts_Click" Width="100" Margin="0,0,8,0"/>
+                    </StackPanel>
+                    <DataGrid x:Name="GridProducts" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ProduktID" Binding="{Binding ProduktID}" Width="*"/>
+                            <DataGridTextColumn Header="Stregkode" Binding="{Binding Stregkode}" Width="2*"/>
+                            <DataGridTextColumn Header="Pris" Binding="{Binding Pris}" Width="*"/>
+                            <DataGridTextColumn Header="ReolID" Binding="{Binding ReolID}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <!-- Lejere & Reoler -->
+            <TabItem Header="Lejere &amp; Reoler">
+                <Grid Margin="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="420"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Formularer venstre -->
+                    <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="8" VerticalAlignment="Top">
+                            <!-- Opret Lejer -->
+                            <GroupBox Header="Opret lejer">
+                                <StackPanel Margin="8">
+                                    <TextBlock Text="Navn" FontWeight="SemiBold"/>
+                                    <TextBox x:Name="TbLejerNavn" Margin="0,4,0,10"/>
+                                    <TextBlock Text="Tlf" FontWeight="SemiBold"/>
+                                    <TextBox x:Name="TbLejerTlf" Margin="0,4,0,10"/>
+                                    <TextBlock Text="Email" FontWeight="SemiBold"/>
+                                    <TextBox x:Name="TbLejerEmail" Margin="0,4,0,12"/>
+                                    <Button Content="Opret lejer" Click="CreateLejer_Click" Height="34"/>
+                                </StackPanel>
+                            </GroupBox>
+
+                            <!-- Opret Reol -->
+                            <GroupBox Header="Opret reol" Margin="0,12,0,0">
+                                <StackPanel Margin="8">
+                                    <TextBlock Text="Type" FontWeight="SemiBold"/>
+                                    <TextBox x:Name="TbReolType" Margin="0,4,0,12" />
+                                    <Button Content="Opret reol" Click="CreateReol_Click" Height="34"/>
+                                </StackPanel>
+                            </GroupBox>
+
+                            <!-- Opret Lejeaftale -->
+                            <GroupBox Header="Tildel reol (lejeaftale)" Margin="0,12,0,0">
+                                <StackPanel Margin="8">
+                                    <TextBlock Text="LejerID" FontWeight="SemiBold"/>
+                                    <TextBox x:Name="TbLA_LejerID" Margin="0,4,0,8"/>
+                                    <TextBlock Text="ReolID" FontWeight="SemiBold"/>
+                                    <TextBox x:Name="TbLA_ReolID" Margin="0,4,0,8"/>
+                                    <TextBlock Text="Start (yyyy-mm-dd)" FontWeight="SemiBold"/>
+                                    <TextBox x:Name="TbLA_Start" Margin="0,4,0,8"/>
+                                    <TextBlock Text="Slut (valgfri, yyyy-mm-dd)" FontWeight="SemiBold"/>
+                                    <TextBox x:Name="TbLA_Slut" Margin="0,4,0,8"/>
+                                    <TextBlock Text="Lejepris pr. måned" FontWeight="SemiBold"/>
+                                    <TextBox x:Name="TbLA_Lejepris" Margin="0,4,0,8"/>
+                                    <TextBlock Text="Kommission %" FontWeight="SemiBold"/>
+                                    <TextBox x:Name="TbLA_Kommission" Margin="0,4,0,12"/>
+                                    <Button Content="Opret lejeaftale" Click="CreateLejeaftale_Click" Height="34"/>
+                                </StackPanel>
+                            </GroupBox>
+
+                            <TextBlock x:Name="LblLeaseResult" Margin="4,10,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- Lister højre -->
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <GroupBox Header="Lejere" Margin="0,0,0,8">
+                            <DockPanel>
+                                <Button Content="Opdater" DockPanel.Dock="Top" Margin="8" Width="100" Click="RefreshLejere_Click"/>
+                                <DataGrid x:Name="GridLejere" AutoGenerateColumns="False" IsReadOnly="True" Margin="8">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="LejerID" Binding="{Binding LejerID}" Width="*"/>
+                                        <DataGridTextColumn Header="Navn" Binding="{Binding Navn}" Width="2*"/>
+                                        <DataGridTextColumn Header="Tlf" Binding="{Binding Tlf}" Width="*"/>
+                                        <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="2*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </DockPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Reoler" Grid.Row="1" Margin="0,0,0,8">
+                            <DockPanel>
+                                <Button Content="Opdater" DockPanel.Dock="Top" Margin="8" Width="100" Click="RefreshReoler_Click"/>
+                                <DataGrid x:Name="GridReoler" AutoGenerateColumns="False" IsReadOnly="True" Margin="8">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="ReolID" Binding="{Binding ReolID}" Width="*"/>
+                                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="2*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </DockPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Lejeaftaler" Grid.Row="2">
+                            <DockPanel>
+                                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="8">
+                                    <TextBlock Text="Filter: LejerID" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBox x:Name="TbFilterLejerID" Width="80" Margin="0,0,8,0"/>
+                                    <Button Content="Opdater" Width="100" Click="RefreshLejeaftaler_Click"/>
+                                </StackPanel>
+                                <DataGrid x:Name="GridLejeaftaler" AutoGenerateColumns="False" IsReadOnly="True" Margin="8">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="AftaleID" Binding="{Binding LejeaftaleID}" Width="*"/>
+                                        <DataGridTextColumn Header="LejerID" Binding="{Binding LejerID}" Width="*"/>
+                                        <DataGridTextColumn Header="ReolID" Binding="{Binding ReolID}" Width="*"/>
+                                        <DataGridTextColumn Header="Start" Binding="{Binding StartDato}" Width="*"/>
+                                        <DataGridTextColumn Header="Slut" Binding="{Binding SlutDato}" Width="*"/>
+                                        <DataGridTextColumn Header="Leje/måned" Binding="{Binding LejePrisPrMaaned}" Width="*"/>
+                                        <DataGridTextColumn Header="Kommission %" Binding="{Binding KommissionProcent}" Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </DockPanel>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <!-- Afregning & Betaling -->
+            <TabItem Header="Afregning &amp; Betaling">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Vælg lejer & måned -->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Lejer" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <ComboBox x:Name="CbAfregLejer" Width="260" DisplayMemberPath="Navn" SelectedValuePath="LejerID" Margin="0,0,12,0"/>
+                        <TextBlock Text="År" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBox x:Name="TbAfregAar" Width="70" Margin="0,0,12,0"/>
+                        <TextBlock Text="Måned" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBox x:Name="TbAfregMaaned" Width="50" Margin="0,0,12,0"/>
+                        <CheckBox x:Name="ChkGemAfregning" Content="Gem afregning" IsChecked="True" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                        <Button Content="Kør afregning" Width="140" Click="RunSettlement_Click"/>
+                    </StackPanel>
+
+                    <!-- Linjer -->
+                    <DataGrid x:Name="GridAfregLinjer" Grid.Row="1" Margin="0,10,0,10" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*"/>
+                            <DataGridTextColumn Header="Beskrivelse" Binding="{Binding Beskrivelse}" Width="2*"/>
+                            <DataGridTextColumn Header="Beløb" Binding="{Binding Beløb}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- Summer + Eksport -->
+                    <DockPanel Grid.Row="2" LastChildFill="False">
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                            <TextBlock x:Name="LblSumOms" Text="Omsætning: 0,00" FontWeight="SemiBold" Margin="0,0,24,0"/>
+                            <TextBlock x:Name="LblSumKom" Text="Kommission: 0,00" FontWeight="SemiBold" Margin="0,0,24,0"/>
+                            <TextBlock x:Name="LblSumLeje" Text="Reolleje: 0,00" FontWeight="SemiBold" Margin="0,0,24,0"/>
+                            <TextBlock x:Name="LblSumNetto" Text="Netto: 0,00" FontWeight="Bold" Margin="0,0,24,0"/>
+                            <TextBlock x:Name="LblAfregningID" Text="" FontStyle="Italic" Foreground="Gray"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                            <Button Content="Eksportér CSV" Width="120" Click="ExportCsv_Click" Margin="0,0,8,0"/>
+                            <Button Content="Eksportér PDF" Width="120" Click="ExportPdf_Click"/>
+                        </StackPanel>
+                    </DockPanel>
+
+                    <!-- Betaling -->
+                    <GroupBox Grid.Row="3" Header="Registrér betaling" Margin="0,10,0,0">
+                        <StackPanel Orientation="Horizontal" Margin="8">
+                            <TextBlock Text="Beløb (+ butik→lejer / − lejer→butik)" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox x:Name="TbPayAmount" Width="120" Margin="0,0,8,0"/>
+                            <TextBlock Text="Metode" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox x:Name="TbPayMethod" Width="120" Text="MobilePay" Margin="0,0,8,0"/>
+                            <TextBlock Text="Note" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox x:Name="TbPayNote" Width="240" Margin="0,0,8,0"/>
+                            <Button Content="Registrér betaling" Width="150" Click="RegisterPayment_Click"/>
+                            <TextBlock x:Name="LblPaymentResult" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</Window>
